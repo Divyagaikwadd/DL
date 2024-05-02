@@ -1,0 +1,428 @@
+
+
+    !nvidia-smi
+
+    Wed May  1 13:53:36 2024       
+    +---------------------------------------------------------------------------------------+
+    | NVIDIA-SMI 535.104.05             Driver Version: 535.104.05   CUDA Version: 12.2     |
+    |-----------------------------------------+----------------------+----------------------+
+    | GPU  Name                 Persistence-M | Bus-Id        Disp.A | Volatile Uncorr. ECC |
+    | Fan  Temp   Perf          Pwr:Usage/Cap |         Memory-Usage | GPU-Util  Compute M. |
+    |                                         |                      |               MIG M. |
+    |=========================================+======================+======================|
+    |   0  Tesla T4                       Off | 00000000:00:04.0 Off |                    0 |
+    | N/A   37C    P8               9W /  70W |      0MiB / 15360MiB |      0%      Default |
+    |                                         |                      |                  N/A |
+    +-----------------------------------------+----------------------+----------------------+
+                                                                                             
+    +---------------------------------------------------------------------------------------+
+    | Processes:                                                                            |
+    |  GPU   GI   CI        PID   Type   Process name                            GPU Memory |
+    |        ID   ID                                                             Usage      |
+    |=======================================================================================|
+    |  No running processes found                                                           |
+    +---------------------------------------------------------------------------------------+
+
+    !pip install nvcc4jupyter
+
+    Collecting nvcc4jupyter
+      Downloading nvcc4jupyter-1.2.1-py3-none-any.whl (10 kB)
+    Installing collected packages: nvcc4jupyter
+    Successfully installed nvcc4jupyter-1.2.1
+
+    %load_ext nvcc4jupyter
+
+    Detected platform "Colab". Running its setup...
+    Source files will be saved in "/tmp/tmp3yankrdz".
+
+    !apt update -qq;
+    !wget https://developer.nvidia.com/compute/cuda/8.0/Prod2/local_installers/cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64-deb;
+    !dpkg -i cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64-deb;
+    !apt-key add /var/cuda-repo-8-0-local-ga2/7fa2af80.pub;
+    !apt-get update -qq;
+    !apt-get install cuda gcc-5 g++-5 -y -qq;
+    !ln -s /usr/bin/gcc-5 /usr/local/cuda/bin/gcc;
+    !ln -s /usr/bin/g++-5 /usr/local/cuda/bin/g++;
+    !apt install cuda-8.0;
+
+    45 packages can be upgraded. Run 'apt list --upgradable' to see them.
+    --2024-05-01 09:23:32--  https://developer.nvidia.com/compute/cuda/8.0/Prod2/local_installers/cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64-deb
+    Resolving developer.nvidia.com (developer.nvidia.com)... 152.195.19.142
+    Connecting to developer.nvidia.com (developer.nvidia.com)|152.195.19.142|:443... connected.
+    HTTP request sent, awaiting response... 302 Found
+    Location: https://developer.nvidia.com/downloads/compute/cuda/8.0/prod2/local_installers/cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64-deb [following]
+    --2024-05-01 09:23:33--  https://developer.nvidia.com/downloads/compute/cuda/8.0/prod2/local_installers/cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64-deb
+    Reusing existing connection to developer.nvidia.com:443.
+    HTTP request sent, awaiting response... 302 Found
+    Location: https://developer.download.nvidia.com/compute/cuda/8.0/secure/Prod2/local_installers/cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64.deb?PRO8lADLdhLKAaC4WxZmwXRFvx_wPby2PO9jmv6UPvgQQZAtA0dnpG2yPs-VxtnJnCBlJIbIbobqQ3vKG01ZXxyLq5f2EwUXoT46vIPVoHNuGpE3AElakD2JRguDESfa36TWRTBi-DmBcfKwRfpIEXrexCQKXGE3qi2E8H8dFgAk-WTIxZuN6ii9G8RWEm3adW11qi10EtzyPlMwjxTiAqcGPw== [following]
+    --2024-05-01 09:23:33--  https://developer.download.nvidia.com/compute/cuda/8.0/secure/Prod2/local_installers/cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64.deb?PRO8lADLdhLKAaC4WxZmwXRFvx_wPby2PO9jmv6UPvgQQZAtA0dnpG2yPs-VxtnJnCBlJIbIbobqQ3vKG01ZXxyLq5f2EwUXoT46vIPVoHNuGpE3AElakD2JRguDESfa36TWRTBi-DmBcfKwRfpIEXrexCQKXGE3qi2E8H8dFgAk-WTIxZuN6ii9G8RWEm3adW11qi10EtzyPlMwjxTiAqcGPw==
+    Resolving developer.download.nvidia.com (developer.download.nvidia.com)... 152.195.19.142
+    Connecting to developer.download.nvidia.com (developer.download.nvidia.com)|152.195.19.142|:443... connected.
+    HTTP request sent, awaiting response... 200 OK
+    Length: 1913589814 (1.8G) [application/x-deb]
+    Saving to: ‘cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64-deb’
+
+    cuda-repo-ubuntu160 100%[===================>]   1.78G   130MB/s    in 14s     
+
+    2024-05-01 09:23:47 (128 MB/s) - ‘cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64-deb’ saved [1913589814/1913589814]
+
+    Selecting previously unselected package cuda-repo-ubuntu1604-8-0-local-ga2.
+    (Reading database ... 121920 files and directories currently installed.)
+    Preparing to unpack cuda-repo-ubuntu1604-8-0-local-ga2_8.0.61-1_amd64-deb ...
+    Unpacking cuda-repo-ubuntu1604-8-0-local-ga2 (8.0.61-1) ...
+    Setting up cuda-repo-ubuntu1604-8-0-local-ga2 (8.0.61-1) ...
+    Warning: The postinst maintainerscript of the package cuda-repo-ubuntu1604-8-0-local-ga2
+    Warning: seems to use apt-key (provided by apt) without depending on gpg, gnupg, or gnupg2.
+    Warning: This will BREAK in the future and should be fixed by the package maintainer(s).
+    Note: Check first if apt-key functionality is needed at all - it probably isn't!
+    Warning: apt-key should not be used in scripts (called from postinst maintainerscript of the package cuda-repo-ubuntu1604-8-0-local-ga2)
+    Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
+    OK
+    Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
+    OK
+    W: file:/var/cuda-repo-8-0-local-ga2/Release.gpg: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+    E: Unable to locate package gcc-5
+    E: Package 'g++-5' has no installation candidate
+    Reading package lists... Done
+    Building dependency tree... Done
+    Reading state information... Done
+    E: Unable to locate package cuda-8.0
+    E: Couldn't find any package by glob 'cuda-8.0'
+
+    !/usr/local/cuda/bin/nvcc --version
+
+    nvcc: NVIDIA (R) Cuda compiler driver
+    Copyright (c) 2005-2023 NVIDIA Corporation
+    Built on Tue_Aug_15_22:02:13_PDT_2023
+    Cuda compilation tools, release 12.2, V12.2.140
+    Build cuda_12.2.r12.2/compiler.33191640_0
+
+    pip install git+https://github.com/andreinechaev/nvcc4jupyter.git
+
+    Collecting git+https://github.com/andreinechaev/nvcc4jupyter.git
+      Cloning https://github.com/andreinechaev/nvcc4jupyter.git to /tmp/pip-req-build-9508i37u
+      Running command git clone --filter=blob:none --quiet https://github.com/andreinechaev/nvcc4jupyter.git /tmp/pip-req-build-9508i37u
+      Resolved https://github.com/andreinechaev/nvcc4jupyter.git to commit 5741c522547756ac4bb7a16df32106a15efb8a57
+      Installing build dependencies ... ents to build wheel ... etadata (pyproject.toml) ... 
+
+    %load_ext nvcc4jupyter
+
+    The nvcc4jupyter extension is already loaded. To reload it, use:
+      %reload_ext nvcc4jupyter
+
+    %%cuda
+    #include <stdio.h>
+
+    __global__ void kernel() {
+        printf("Hello, CUDA World!\n");
+    }
+
+    int main() {
+        kernel<<<1, 1>>>();
+        cudaDeviceSynchronize();
+        return 0;
+    }
+
+    Hello, CUDA World!
+
+    %%cuda
+    #include <stdio.h>
+    #include <stdlib.h>
+    __global__ void add(int *a, int *b, int *c) {
+    *c = *a + *b;
+    }
+    int main() {
+    int a, b, c;
+    // host copies of variables a, b & c
+    int *d_a, *d_b, *d_c;
+    // device copies of variables a, b & c
+    int size = sizeof(int);
+    // Allocate space for device copies of a, b, c
+    cudaMalloc((void **)&d_a, size);
+    cudaMalloc((void **)&d_b, size);
+    cudaMalloc((void **)&d_c, size);
+    // Setup input values
+    c = 0;
+    a = 89;
+    b = 90;
+    // Copy inputs to device
+    cudaMemcpy(d_a, &a, size, cudaMemcpyHostToDevice);
+      cudaMemcpy(d_b, &b, size, cudaMemcpyHostToDevice);
+    // Launch add() kernel on GPU
+    add<<<1,1>>>(d_a, d_b, d_c);
+    // Copy result back to host
+    cudaError err = cudaMemcpy(&c, d_c, size, cudaMemcpyDeviceToHost);
+      if(err!=cudaSuccess) {
+          printf("CUDA error copying to Host: %s\n", cudaGetErrorString(err));
+      }
+    printf("result is %d\n",c);
+    // Cleanup
+    cudaFree(d_a);
+    cudaFree(d_b);
+    cudaFree(d_c);
+    return 0;
+    }
+
+    result is 179
+
+    %%cuda
+    #include <stdio.h>
+
+    #define N 3 // Matrix size
+
+    __global__ void matrixMul(int *a, int *b, int *c, int n) {
+        int row = blockIdx.y * blockDim.y + threadIdx.y;
+        int col = blockIdx.x * blockDim.x + threadIdx.x;
+
+        if (row < n && col < n) {
+            int sum = 0;
+            for (int i = 0; i < n; ++i)
+                sum += a[row * n + i] * b[i * n + col];
+            c[row * n + col] = sum;
+        }
+    }
+
+    int main() {
+        int *a, *b, *c; // Host matrices
+        int *d_a, *d_b, *d_c; // Device matrices
+
+        // Allocate memory on the host
+        a = (int *)malloc(N * N * sizeof(int));
+        b = (int *)malloc(N * N * sizeof(int));
+        c = (int *)malloc(N * N * sizeof(int));
+
+        // Allocate memory on the device
+        cudaMalloc(&d_a, N * N * sizeof(int));
+        cudaMalloc(&d_b, N * N * sizeof(int));
+        cudaMalloc(&d_c, N * N * sizeof(int));
+
+        // Initialize matrices on the host
+        for (int i = 0; i < N * N; i++) {
+            a[i] = i;
+            b[i] = i * 2;
+        }
+
+        // Copy matrices from host to device
+        cudaMemcpy(d_a, a, N * N * sizeof(int), cudaMemcpyHostToDevice);
+        cudaMemcpy(d_b, b, N * N * sizeof(int), cudaMemcpyHostToDevice);
+
+        // Set grid and block dimensions
+        dim3 threadsPerBlock(8, 8);
+        dim3 blocksPerGrid((N + threadsPerBlock.x - 1) / threadsPerBlock.x,
+                           (N + threadsPerBlock.y - 1) / threadsPerBlock.y);
+
+        // Perform matrix multiplication
+        matrixMul<<<blocksPerGrid, threadsPerBlock>>>(d_a, d_b, d_c, N);
+
+        // Copy result back to host
+        cudaMemcpy(c, d_c, N * N * sizeof(int), cudaMemcpyDeviceToHost);
+
+        // Output some elements of the resulting matrix
+        printf("Resulting matrix:\n");
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                printf("%d\t", c[i * N + j]);
+            }
+            printf("\n");
+        }
+
+        // Free device memory
+        cudaFree(d_a);
+        cudaFree(d_b);
+        cudaFree(d_c);
+
+        // Free host memory
+        free(a);
+        free(b);
+        free(c);
+
+        return 0;
+    }
+
+    Resulting matrix:
+    30	36	42	
+    84	108	132	
+    138	180	222	
+
+    %%cuda
+    #include <stdio.h>
+
+    #define N 10 // Size of the vectors
+
+    __global__ void vectorAdd(int *a, int *b, int *c) {
+        int index = blockIdx.x * blockDim.x + threadIdx.x;
+        if (index < N)
+            c[index] = a[index] + b[index];
+    }
+
+    int main() {
+        int *a, *b, *c; // Host vectors
+        int *d_a, *d_b, *d_c; // Device vectors
+
+        // Allocate memory on the host
+        a = (int *)malloc(N * sizeof(int));
+        b = (int *)malloc(N * sizeof(int));
+        c = (int *)malloc(N * sizeof(int));
+
+        // Allocate memory on the device
+        cudaMalloc(&d_a, N * sizeof(int));
+        cudaMalloc(&d_b, N * sizeof(int));
+        cudaMalloc(&d_c, N * sizeof(int));
+
+        // Initialize vectors on the host
+        for (int i = 0; i < N; i++) {
+            a[i] = i;
+            b[i] = i * 2;
+        }
+
+        // Copy vectors from host to device
+        cudaMemcpy(d_a, a, N * sizeof(int), cudaMemcpyHostToDevice);
+        cudaMemcpy(d_b, b, N * sizeof(int), cudaMemcpyHostToDevice);
+
+        // Perform vector addition
+        int threadsPerBlock = 256;
+        int blocksPerGrid = (N + threadsPerBlock - 1) / threadsPerBlock;
+        vectorAdd<<<blocksPerGrid, threadsPerBlock>>>(d_a, d_b, d_c);
+
+        // Copy result back to host
+        cudaMemcpy(c, d_c, N * sizeof(int), cudaMemcpyDeviceToHost);
+
+        // Output vectors a, b, and resultant vector c
+        printf("Vector a:\n");
+        for (int i = 0; i < N; i++) {
+            printf("%d ", a[i]);
+        }
+        printf("\n");
+
+        printf("Vector b:\n");
+        for (int i = 0; i < N; i++) {
+            printf("%d ", b[i]);
+        }
+        printf("\n");
+
+        printf("Resultant vector c:\n");
+        for (int i = 0; i < N; i++) {
+            printf("%d ", c[i]);
+        }
+        printf("\n");
+
+        // Free device memory
+        cudaFree(d_a);
+        cudaFree(d_b);
+        cudaFree(d_c);
+
+        // Free host memory
+        free(a);
+        free(b);
+        free(c);
+
+        return 0;
+    }
+
+    Vector a:
+    0 1 2 3 4 5 6 7 8 9 
+    Vector b:
+    0 2 4 6 8 10 12 14 16 18 
+    Resultant vector c:
+    0 3 6 9 12 15 18 21 24 27 
+
+    %%cuda
+    #include <stdio.h>
+
+    #define N 3 // Matrix size
+
+    __global__ void matrixMul(int *a, int *b, int *c, int n) {
+        int row = blockIdx.y * blockDim.y + threadIdx.y;
+        int col = blockIdx.x * blockDim.x + threadIdx.x;
+
+        if (row < n && col < n) {
+            int sum = 0;
+            for (int i = 0; i < n; ++i)
+                sum += a[row * n + i] * b[i * n + col];
+            c[row * n + col] = sum;
+        }
+    }
+
+    int main() {
+        int *a, *b, *c; // Host matrices
+        int *d_a, *d_b, *d_c; // Device matrices
+
+        // Allocate memory on the host
+        a = (int *)malloc(N * N * sizeof(int));
+        b = (int *)malloc(N * N * sizeof(int));
+        c = (int *)malloc(N * N * sizeof(int));
+
+        // Allocate memory on the device
+        cudaMalloc(&d_a, N * N * sizeof(int));
+        cudaMalloc(&d_b, N * N * sizeof(int));
+        cudaMalloc(&d_c, N * N * sizeof(int));
+
+        // Initialize matrices on the host
+        printf("Matrix A:\n");
+        for (int i = 0; i < N * N; i++) {
+            a[i] = i;
+            printf("%d\t", a[i]);
+            if ((i + 1) % N == 0)
+                printf("\n");
+        }
+        printf("\n");
+
+        printf("Matrix B:\n");
+        for (int i = 0; i < N * N; i++) {
+            b[i] = i * 2;
+            printf("%d\t", b[i]);
+            if ((i + 1) % N == 0)
+                printf("\n");
+        }
+        printf("\n");
+
+        // Copy matrices from host to device
+        cudaMemcpy(d_a, a, N * N * sizeof(int), cudaMemcpyHostToDevice);
+        cudaMemcpy(d_b, b, N * N * sizeof(int), cudaMemcpyHostToDevice);
+
+        // Set grid and block dimensions
+        dim3 threadsPerBlock(2, 2);
+        dim3 blocksPerGrid((N + threadsPerBlock.x - 1) / threadsPerBlock.x,
+                           (N + threadsPerBlock.y - 1) / threadsPerBlock.y);
+
+        // Perform matrix multiplication
+        matrixMul<<<blocksPerGrid, threadsPerBlock>>>(d_a, d_b, d_c, N);
+
+        // Copy result back to host
+        cudaMemcpy(c, d_c, N * N * sizeof(int), cudaMemcpyDeviceToHost);
+
+        // Output the resulting matrix
+        printf("Resulting matrix C:\n");
+        for (int i = 0; i < N * N; i++) {
+            printf("%d\t", c[i]);
+            if ((i + 1) % N == 0)
+                printf("\n");
+        }
+
+        // Free device memory
+        cudaFree(d_a);
+        cudaFree(d_b);
+        cudaFree(d_c);
+
+        // Free host memory
+        free(a);
+        free(b);
+        free(c);
+
+        return 0;
+    }
+
+    Matrix A:
+    0	1	2	
+    3	4	5	
+    6	7	8	
+
+    Matrix B:
+    0	2	4	
+    6	8	10	
+    12	14	16	
+
+    Resulting matrix C:
+    30	36	42	
+    84	108	132	
+    138	180	222	
